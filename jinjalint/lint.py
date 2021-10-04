@@ -30,7 +30,7 @@ def resolve_file_paths_(input_name, extensions):
     if not path.is_file():
         raise Exception('{} is not a regular file'.format(path))
 
-    return [path] if path.suffix in extensions else []
+    return [path]
 
 
 def resolve_file_paths(input_names, extensions):
