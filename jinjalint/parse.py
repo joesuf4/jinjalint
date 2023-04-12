@@ -487,8 +487,8 @@ slow_text_char = (
 )
 
 # Not as precise as slow_text_char but must faster
-quick_text = P.regex(r'[^{]+', flags=re.DOTALL)
-
+quick_text = P.regex(r'[^{<]+', flags=re.DOTALL)
+quick_nohtml_text = P.regex(r'[^{]+', flags=re.DOTALL)
 
 def _combine_optional_container(locations, nodes):
     return JinjaOptionalContainer(
@@ -659,7 +659,7 @@ def make_element_parser(config, content, jinja):
     return style | script | self_closing_element | container_element
 
 
-def make_parser(config=None):
+def make_parser(config=None, path=None):
     if config is None:
         config = {}
 
@@ -677,12 +677,19 @@ def make_parser(config=None):
     opt_container = make_jinja_optional_container_parser(
         config, content, jinja)
 
-    content_ = interpolated(
-        (
-            quick_text | opt_container | jinja |
-            slow_text_char
-        ).many()
-    )
+    if re.match(r'\.html?$', str(path)):
+        content_ = interpolated(
+            (
+                quick_text | comment | dtd | element | opt_container | jinja |
+                slow_text_char
+            ).many()
+        )
+    else:
+        content_ = interpolated(
+            (
+                quick_nohtml_text | opt_container | jinja | slow_text_char
+            ).many()
+        )
 
     return {
         'content': content_,

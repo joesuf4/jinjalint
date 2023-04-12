@@ -47,7 +47,7 @@ def parse_file(path_and_config):
     with path.open('r') as f:
         source = f.read()
 
-    parser = make_parser(config)
+    parser = make_parser(config, path)
 
     try:
         file = File(
