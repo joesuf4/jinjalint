@@ -487,7 +487,7 @@ slow_text_char = (
 )
 
 # Not as precise as slow_text_char but must faster
-quick_text = P.regex(r'[^{<]+', flags=re.DOTALL)
+quick_text = P.regex(r'[^{]+', flags=re.DOTALL)
 
 
 def _combine_optional_container(locations, nodes):
@@ -679,7 +679,7 @@ def make_parser(config=None):
 
     content_ = interpolated(
         (
-            quick_text | comment | dtd | element | opt_container | jinja |
+            quick_text | opt_container | jinja |
             slow_text_char
         ).many()
     )
