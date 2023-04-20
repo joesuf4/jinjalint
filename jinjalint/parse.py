@@ -677,7 +677,7 @@ def make_parser(config=None, path=None):
     opt_container = make_jinja_optional_container_parser(
         config, content, jinja)
 
-    if re.match(r'\.html?$', str(path)):
+    if re.match(r'\.(?:ht|x)ml?$', str(path)):
         content_ = interpolated(
             (
                 quick_text | comment | dtd | element | opt_container | jinja |
